@@ -1,0 +1,121 @@
+@startuml
+entity Products {
+   product_id: int <PK>
+   category_id: int <FK>
+   seller_id: int <FK>
+   product_image_id: int <FK>
+   --
+   name: varchar <<100>>
+   name_lower: varchar <<100>>
+   weigth: float
+   price: int
+   stock: int  
+}
+
+entity Sellers {
+   seller_id: int <PK>
+   username: int <FK>
+   address_id: int <FK>
+   --
+   name: varchar <<100>>
+}
+
+entity Users {
+   username: varchar <PK>
+   --
+   password: varchar
+   email: varchar
+   token: varchar
+}
+
+entity Customers {
+   customer_id: int <PK>
+   username: varchar <FK>
+   address_id: int <FK>
+   --
+   name: varchar
+   phone: int
+}
+
+entity Address {
+   address_id: int <PK>
+   --
+   name: varchar 
+   latitude: float
+   longitude: float
+   street: varchar
+   sub_distict: varchar
+   district: varchar
+   province: varchar
+   postal_code: varchar
+   additional_info: varchar
+}
+
+entity Categories {
+   category_id: int <PK>
+   --
+   name: varchar
+}
+
+entity Orders {
+   order_id: int <PK>
+   address_id: int <FK>
+   customer_id: int <FK>
+   seller_id: int <FK>
+   payment_method_id: int <FK>
+   courier_id: int <FK>
+   --
+   date: timestamp
+   service_fees: int
+   total_weigth: int
+   total_price: int
+   total_amount: int
+   order_status: varchar
+   payment_status: varchar
+}
+
+entity Order_items {
+   order_item_id: int <PK>
+   order_id: int <FK>
+   product_id: int <FK>
+   --
+   qty: int
+   total_price: int
+}
+
+entity Couriers {
+   courier_id: int <PK>
+   --
+   name: varchar
+}
+
+entity Payment_methods {
+   payment_method_id: int <PK>
+   --
+   name: varchar
+}
+
+entity Product_images {
+   product_image_id: int <PK>
+   --
+   image_url: varchar
+}
+
+Products }o--|| Sellers
+Products ||--o{ Product_images 
+Users ||--o| Sellers
+Users ||--|| Customers
+Address ||--|| Sellers
+Address }o--|| Customers
+Categorys }o--o{ Products
+Orders ||--|| Address
+Orders ||--|| Customers
+Orders ||--|| Sellers
+Orders ||--|| Payment_methods
+Orders ||--|| Couriers
+Orders ||--|{ Order_items
+Order_items |}--{| Products
+
+
+@enduml
+
